@@ -6,13 +6,13 @@ class NotesHandler {
 
     autoBind(this);
   }
- 
-  postNoteHandler(request) {
+
+  postNoteHandler(request, h) {
     try {
       const { title = 'untitled', body, tags } = request.payload;
-    
+
       const noteId = this._service.addNote({ title, body, tags });
-  
+
       const response = h.response({
         status: 'success',
         message: 'Catatan berhasil ditambahkan',
@@ -42,7 +42,7 @@ class NotesHandler {
     };
   }
 
-  getNoteByIdHandler() {
+  getNoteByIdHandler(request, h) {
     try {
       const { id } = request.params;
       const note = this._service.getNoteById(id);
@@ -62,7 +62,7 @@ class NotesHandler {
     }
   }
 
-  putNoteByIdHandler() {
+  putNoteByIdHandler(request, h) {
     try {
       const { id } = request.params;
 
@@ -82,11 +82,10 @@ class NotesHandler {
     }
   }
 
-  deleteNoteByIdHandler() {
+  deleteNoteByIdHandler(request, h) {
     try {
       const { id } = request.params;
       this._service.deleteNoteById(id);
-
       return {
         status: 'success',
         message: 'Catatan berhasil dihapus',
@@ -94,12 +93,12 @@ class NotesHandler {
     } catch (error) {
       const response = h.response({
         status: 'fail',
-        message: error.message,
+        message: 'Catatan gagal dihapus. Id tidak ditemukan',
       });
       response.code(404);
       return response;
     }
   }
 }
- 
+
 module.exports = NotesHandler;
