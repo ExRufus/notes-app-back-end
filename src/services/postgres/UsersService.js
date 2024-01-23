@@ -43,6 +43,22 @@ class UsersService {
   }
 
   async getUserById(userId) {
-    
+    //  lakukan kueri untuk mendapatkan id, username, dan fullname dari tabel users berdasarkan parameter userId
+    const query = {
+      text: 'SELECT id, username, fullname FROM users WHERE id = $1',
+      values: [userId],
+    };
+
+    const result = await this._pool.query(query);
+
+    // Bila nilainya 0, itu berarti user dengan id yang diminta tidak ditemukan.  
+    if (!result.rows.length) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
+
+    // Selain itu, kembalikan fungsi getUserById dengan nilai user yang didapat pada result.rows[0].
+    return result.rows[0];
   }
 }
+
+module.exports = UsersService;
