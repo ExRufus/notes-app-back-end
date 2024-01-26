@@ -19,7 +19,7 @@ class AuthenticationsHandler {
 
     // Setelah proses memverifikasi kredensial selesai, kita bisa lanjutkan dengan membuat access token dan refresh token, serta membawa objek payload yang memiliki properti id user
     const accessToken = this._tokenManager.generateAccessToken({ id });
-    const refreshToken = this._tokenManager.generateAccesshToken({ id });
+    const refreshToken = this._tokenManager.generateRefreshToken({ id });
 
     // Silakan gunakan fungsi this._authenticationsService.addRefreshToken untuk menyimpan refreshToken.
     await this._authenticationsService.addRefreshToken(refreshToken);
@@ -56,7 +56,7 @@ class AuthenticationsHandler {
 
   async deleteAuthenticationHandler(request, h) {
     // Setelah request.payload divalidasi, kita bisa dapatkan nilai refreshToken dari request payload untuk kemudian menghapus token tersebut dari database.
-    this._validator.validateDeleteAuthenticationsPayload(request.payload);
+    this._validator.validateDeleteAuthenticationPayload(request.payload);
 
     const { refreshToken } = request.payload;
     // Sebelum menghapusnya kita perlu memastikan refreshToken tersebut ada di database. Caranya, gunakan fungsi this._authenticationsService.verifyRefreshToken.

@@ -1,4 +1,4 @@
-const AuthenticationsHandler = require("./handler");
+const AuthenticationsHandler = require('./handler');
 const routes = require('./routes');
 
 module.exports = {
@@ -16,7 +16,6 @@ module.exports = {
       tokenManager,
       validator,
     );
-
     server.route(routes(authenticationsHandler));
   },
 };

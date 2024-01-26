@@ -2,12 +2,12 @@ require('dotenv').config();
 
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
-const ClientError = require('./exceptions/ClientError');
 
 // notes
 const notes = require('./api/notes');
 const NotesService = require('./services/postgres/NotesService');
 const NotesValidator = require('./validator/notes');
+const ClientError = require('./exceptions/ClientError');
 
 // users
 const users = require('./api/users');
@@ -57,7 +57,7 @@ const init = async () => {
         id: artifacts.decoded.payload.id,
       },
     }),
-  })
+  });
 
   await server.register([
     {
@@ -87,7 +87,7 @@ const init = async () => {
 
   server.ext('onPreResponse', (request, h) => {
     // mendapatkan konteks response dari request
-    const {response } = request;
+    const { response } = request;
 
     // penanganan client error secara internal.
     if (response instanceof ClientError) {
@@ -100,7 +100,7 @@ const init = async () => {
     }
 
     return h.continue;
-  })
+  });
 
   await server.start();
   console.log(`Server berjalan pada ${server.info.uri}`);
