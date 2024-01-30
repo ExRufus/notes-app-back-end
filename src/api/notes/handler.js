@@ -1,13 +1,11 @@
+const autoBind = require("auto-bind");
+
 class NotesHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
 
-    this.postNoteHandler = this.postNoteHandler.bind(this);
-    this.getNotesHandler = this.getNotesHandler.bind(this);
-    this.getNoteByIdHandler = this.getNoteByIdHandler.bind(this);
-    this.putNoteByIdHandler = this.putNoteByIdHandler.bind(this);
-    this.deleteNoteByIdHandler = this.deleteNoteByIdHandler.bind(this);
+    autoBind(this);
   }
 
   async postNoteHandler(request, h) {
@@ -78,6 +76,17 @@ class NotesHandler {
     return {
       status: 'success',
       message: 'Catatan berhasil dihapus',
+    };
+  }
+
+  async getUsersByUsernameHandler(request, h) {
+    const { username = '' } = request.query;
+    const users = await this._service.getUsersByUsername(username);
+    return {
+      status: 'success',
+      data: {
+        users,
+      },
     };
   }
 }
